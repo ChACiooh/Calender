@@ -12,8 +12,8 @@ SubjectGrade::SubjectGrade(const string& name, int credit, int cutA, int cutB, i
 SubjectGrade::~SubjectGrade() {}
 string SubjectGrade::GetGrade(int score) const
 {
-    return score >= 4 ? "A" :
-             score >= 3 ? "B" :
-             score >= 2 ? "C" :
-             score >= 1 ? "D" : "F";
+    return score >= cutA_ ? "A" :
+             score >= cutB_ ? "B" :
+             score >= cutC_ ? "C" :
+             score >= cutD_ ? "D" : "F";
 }

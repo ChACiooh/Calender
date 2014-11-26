@@ -6,7 +6,7 @@
 
 inline bool CompareStudent(const pair<string, double>& a, const pair<string, double>& b) {
   // 여기에 성적 내림차순으로 정렬되도록 대소비교문 작성.
-  return a.second < b.second;
+  return a.second > b.second;
 }
 
 double GetNumberGrade(const string& str) {
@@ -51,10 +51,10 @@ int main() {
   }
 
   sort(student_grades.begin(), student_grades.end(), CompareStudent);
-
+  cout.precision(3);
   for (size_t i = 0; i < student_grades.size(); ++i) {
     // 여기에서 학점 출력이 소숫점 두자리만 되도록 cout의 멤버함수 호출
-   cout << student_grades[i].first << " " << cout.precision(3) << student_grades[i].second << endl;
+   cout << student_grades[i].first << " " << student_grades[i].second << endl;
   }
 
   return 0;
