@@ -1,0 +1,4 @@
+GMT 0
+Japan 19
+NewYork 8
+Seoul 19
