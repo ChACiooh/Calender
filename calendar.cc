@@ -59,7 +59,7 @@ void Date::NextDay(int n)
 
 bool Date::SetDate(int year, int month, int day)
 {
-    if(year <= 0 || month > MONTH_MAX || month < 1) return false;
+    if(year < 0 || month > MONTH_MAX || month < 1) return false;
     else switch(month)
     {
         case JANUARY:       ////////
