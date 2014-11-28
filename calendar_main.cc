@@ -1,9 +1,9 @@
-#include "calender.h"
+#include "calendar.h"
 
 int main()
 {
     string cmd;
-    Date date;
+    Date A_Live;
     do
     {
         cin >> cmd;
@@ -11,27 +11,27 @@ int main()
         {
             try
             {
-                cin >> date;
+                cin >> A_Live;
             } catch(InvalidDateException IDE)
             {
                 cout << "Invalid date: " << IDE.input_date << endl;
                 continue;
             }
-            cout << date;
+            cout << A_Live;
         }
         else if(cmd == "next_day")
         {
-            if(date.day() == 0) continue;
-            date.NextDay();
-            cout << date;
+            if(A_Live.day() == 0) continue;
+            A_Live.NextDay();
+            cout << A_Live;
         }
         else if(cmd == "next")
         {
             int num;
             cin >> num;
-            if(date.day() == 0) continue;
-            date.NextDay(num);
-            cout << date;
+            if(A_Live.day() == 0) continue;
+            A_Live.NextDay(num);
+            cout << A_Live;
         }
     } while(cmd != "quit");
     return 0;

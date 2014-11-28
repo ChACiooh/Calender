@@ -1,13 +1,5 @@
-#include "calender.h"
+#include "calendar.h"
 #include <cstdlib>
-
-#define YEAR_TO_DATE_1      365
-#define YEAR_TO_DATE_2      366
-#define MONTH_TO_DATE_1      31
-#define MONTH_TO_DATE_2      30
-#define YUN_BASE           1996
-#define MONTH_MAX            12
-#define YUN                   4
 
 enum months { JANUARY = 1, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY, AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER };
 const int common_month_date[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -17,22 +9,46 @@ Date::Date(int year, int month, int day) : year_(year), month_(month), day_(day)
 
 void Date::NextDay(int n)
 {
-    int value = year_*YEAR_TO_DATE_1 + (year_ / YUN) + day_;
-    int new_month;
-    if(year_ % YUN == 0) // 올해가 윤년
+    // value setting
+    int value = (year_)*YEAR_TO_DATE_1 + ((year_) / YUN) + 1 + day_ + n;
+    if(GetDaysInYear(year_) == YEAR_TO_DATE_2) // 올해가 윤년
     {
-        if(month_ > FEBRUARY)
-            value += (YEAR_TO_DATE_2 - YEAR_TO_DATE_1);
+        if(month_ <= FEBRUARY) // 2월을 못 넘겼으면
+            value -= (YEAR_TO_DATE_2 - YEAR_TO_DATE_1);
     }
-    for(int i=JANUARY; i<month_;i++)
-            value += common_month_date[i];
+    for(int i=JANUARY; i<month_;i++) // 이번달 전달 까지의 일 수를 더한다.
+        value += common_month_date[i];
 
-    year_ = value / YEAR_TO_DATE_1;
-    value %= YEAR_TO_DATE_1;
-    value -= (year_ / YUN);
+    int temp = value;
+    int i;
+    for(i = 0; temp >= YEAR_TO_DATE_1; i++)
+    {
+        if(i%YUN == 0)
+        {
+            temp -= YEAR_TO_DATE_2;
+            if(temp == -1)
+            {
+                year_ = i;
+                month_ = DECEMBER;
+                day_ = common_month_date[ DECEMBER ];
+                return;
+            }
+        }
+        else    temp -= YEAR_TO_DATE_1;
+    }
+    year_ = i;
+    if(temp == 0) // 전 그 해의 일 수를 모두 소모했단 뜻.
+    {
+        year_ -= 1;
+        month_ = DECEMBER;
+        day_ = common_month_date[ DECEMBER ];
+        return;
+    }
+    value = temp;
 
     // 1월부터 현재 value 값에서 해당 월의 최대 일수를 뺀다.
     // 그 값이 만약 0보다 작거나 같은 경우, 그 new_month가 month가 된다.
+    int new_month;
     for(new_month = JANUARY; value - common_month_date[ new_month ] > 0 ; new_month++)
         value -= common_month_date[ new_month ];
 

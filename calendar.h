@@ -5,6 +5,14 @@
 #include <vector>
 #include <iostream>
 
+#define YEAR_TO_DATE_1      365
+#define YEAR_TO_DATE_2      366
+#define MONTH_TO_DATE_1      31
+#define MONTH_TO_DATE_2      30
+#define YUN_BASE           1996
+#define MONTH_MAX            12
+#define YUN                   4
+
 using namespace std;
 
 class Date {
@@ -28,7 +36,6 @@ class Date {
 
 };
 
-
 struct InvalidDateException {
 
   string input_date;
@@ -41,6 +48,5 @@ struct InvalidDateException {
 void split(vector<string>& res, string base, char token);
 ostream& operator<<(ostream& os, const Date& c);
 istream& operator>>(istream& is, Date& c);
-
 
 #endif // CALENDER_H_INCLUDED
