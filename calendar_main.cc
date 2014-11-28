@@ -12,8 +12,7 @@ int main()
             try
             {
                 cin >> A_Live;
-            } catch(InvalidDateException IDE)
-            {
+            } catch(InvalidDateException IDE) {
                 cout << "Invalid date: " << IDE.input_date << endl;
                 continue;
             }

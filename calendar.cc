@@ -10,12 +10,18 @@ Date::Date(int year, int month, int day) : year_(year), month_(month), day_(day)
 void Date::NextDay(int n)
 {
     // value setting
-    int value = (year_)*YEAR_TO_DATE_1 + ((year_) / YUN) + 1 + day_ + n;
+    int value = (year_)*YEAR_TO_DATE_1 + ((year_) / YUN) + day_ + n;
+    if(year_ >= 0)
+    {
+        // +1의 경우, 0년도 윤년이므로 처리해준 것. 음수 해의 경우에는 0년을 거치지 않았으므로 더하지 않는다.
+        value += 1;
+    }
     if(GetDaysInYear(year_) == YEAR_TO_DATE_2) // 올해가 윤년
     {
         if(month_ <= FEBRUARY) // 2월을 못 넘겼으면
             value -= (YEAR_TO_DATE_2 - YEAR_TO_DATE_1);
     }
+
     for(int i=JANUARY; i<month_;i++) // 이번달 전달 까지의 일 수를 더한다.
         value += common_month_date[i];
 
@@ -50,7 +56,18 @@ void Date::NextDay(int n)
     // 그 값이 만약 0보다 작거나 같은 경우, 그 new_month가 month가 된다.
     int new_month;
     for(new_month = JANUARY; value - common_month_date[ new_month ] > 0 ; new_month++)
+    {
         value -= common_month_date[ new_month ];
+        if(new_month == FEBRUARY && GetDaysInYear(year_) == YEAR_TO_DATE_2)
+        {
+            value -= (YEAR_TO_DATE_2 - YEAR_TO_DATE_1);
+            if(value == 0)
+            {
+                value = common_month_date[ FEBRUARY ] + (YEAR_TO_DATE_2 - YEAR_TO_DATE_1);
+                break;
+            }
+        }
+    }
 
     month_ = new_month;
     day_ = value;
@@ -72,8 +89,8 @@ bool Date::SetDate(int year, int month, int day)
             if(day > MONTH_TO_DATE_1)   return false;
             break;
         case FEBRUARY:      /* 2월*/
-            if(year_ % YUN == 0 && day > 29)    return false;
-            else if(year_ % YUN && day > 28)    return false;
+            if(GetDaysInYear(year) == YEAR_TO_DATE_2 && day > 29)    return false;
+            else if(GetDaysInYear(year) == YEAR_TO_DATE_1 && day > 28)    return false;
             break;
         case APRIL:
         case JUNE:
