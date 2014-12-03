@@ -115,7 +115,11 @@ int Date::day() const { return day_; }
 int Date::GetDaysInYear(int year)
 {
     /*** 윤년을 판단하여 주어진 연도에 해당하는 날짜 수를 return. ***/
-    if(year % YUN == 0) return YEAR_TO_DATE_2;
+    if(year % YUN == 0)
+	{
+		if(year % YUN2 == 0 && year % YUN3 != 0)	return YEAR_TO_DATE_1;
+		return YEAR_TO_DATE_2;
+	}
     else    return YEAR_TO_DATE_1;
 }
 

@@ -12,6 +12,8 @@
 #define YUN_BASE           1996
 #define MONTH_MAX            12
 #define YUN                   4
+#define YUN2				100
+#define YUN3				400
 
 using namespace std;
 
